@@ -14,7 +14,7 @@ struct cave{
 	std::string name{};
 	std::vector<cave*>connections{};
 	bool is_small{};
-	bool is_used{};
+	unsigned int is_used{};
 	std::stack<cave*> cave_stack{};
 	// add stack/vector with used connections??
 };
@@ -52,30 +52,62 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 	
 	std::stack<cave*> main_stack;
 	main_stack.push(v[start_index]);
-
-
-	
-	//while(!main_stack.empty(){
-		
-		if (main_stack.top()->name=="end") {
-			main_stack.pop();
+	unsigned long int answer{};
+	int test{};
+	while(!main_stack.empty()){
+				
+		int added{};
+		if (main_stack.top()->cave_stack.empty() && main_stack.top()->connections.size()>0 && main_stack.top()->is_used==0){
+			for(size_t i{}; i<main_stack.top()->connections.size(); i++){
+				if(main_stack.top()->connections[i]->is_used>0 && main_stack.top()->connections[i]->is_small==true)continue;
+				main_stack.top()->cave_stack.push(main_stack.top()->connections[i]);
+				added++;
+			}
+			//main_stack.top()->is_used++;
+			if(added){
+			cave* cave_ptr= main_stack.top();
+			main_stack.push(main_stack.top()->cave_stack.top());	
+			cave_ptr->is_used++;
+			cave_ptr->cave_stack.pop();
+			}else {
+				main_stack.pop();
+			}
+			added=0;
 			
+		} else if(!main_stack.top()->cave_stack.empty()){
+			cave* cave_ptr= main_stack.top();
+			main_stack.push(main_stack.top()->cave_stack.top());	
+			cave_ptr->is_used++;
+			cave_ptr->cave_stack.pop();	
+		} else if(main_stack.top()->cave_stack.empty()){
+			if(main_stack.top()->name=="end"){
+				main_stack.top()->is_used++;	
+				answer++;
+			}
+			main_stack.top()->is_used--;	
+			main_stack.pop();		
+		} else if(main_stack.top()->name=="start"){
+			main_stack.pop();
 		}
 		
-		for(size_t i{}; i<main_stack.top()->connections.size(); i++){
-			if(main_stack.top()->connections[i]->is_used==false)
-			main_stack.top()->cave_stack.push(main_stack.top()->connections[i]);
-		}
-		
-		main_stack.top()->cave_stack.top()->is_used=true;
-		cave* cave_ptr= main_stack.top();
-		main_stack.push(main_stack.top()->cave_stack.top());		
-		cave_ptr->cave_stack.pop();
-		
-		
-	//}
+		std::cout<<main_stack.top()->name<<" |is_used: "<<main_stack.top()->is_used<<"\n";
+		/*if(main_stack.top()->name=="b")test++;
+		if(test==2){
+			std::cout<<main_stack.top()->name<<"\n";	
+			std::cout<<main_stack.top()->is_used<<"\n";	
+			std::cout<<main_stack.top()->is_small<<"\n";	
+			std::cout<<"Cave_stack:\n";	
+			while(!main_stack.top()->cave_stack.empty()){
+				
+				std::cout<<main_stack.top()->cave_stack.top()->name<<"\n";
+				main_stack.top()->cave_stack.pop();
+			}
+			break;
+		}*/
+		//std::cout<<v[4]->is_used<<"\n";
+	}
 	
-	return 0;
+	return answer;
 }
 
 int main() {
@@ -192,7 +224,7 @@ int main() {
 
 		}
 		
-		std::cout<<find_index(vec_2d,"start");
+		std::cout<<find_index(vec_2d,"start")<<"\nTRAVERSE:\n";
 		traverse(vec_2d, find_index(vec_2d,"start"));
 		
 		myfile.close();
