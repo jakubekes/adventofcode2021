@@ -16,7 +16,6 @@ struct cave{
 	bool is_small{};
 	unsigned int is_used{};
 	std::stack<cave*> cave_stack{};
-	std::stack<int> cave_stack_level{};
 	// add stack/vector with used connections??
 };
 
@@ -55,88 +54,45 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 	main_stack.push(v[start_index]);
 	unsigned long int answer{};
 	int test{};
-	bool was_pop{};
+	//bool was_pop{};
 	while(!main_stack.empty()){
 				
 		int added{};
-		if (was_pop==false && main_stack.top()->connections.size()>0){// && main_stack.top()->cave_stack.empty()){
+		if (main_stack.top()->cave_stack.empty() && main_stack.top()->connections.size()>0 && main_stack.top()->is_used==0){
 			for(size_t i{}; i<main_stack.top()->connections.size(); i++){
 				if(main_stack.top()->connections[i]->is_used>0 && main_stack.top()->connections[i]->is_small==true)continue;
 				main_stack.top()->cave_stack.push(main_stack.top()->connections[i]);
-				main_stack.top()->cave_stack_level.push(main_stack.top()->is_used);
 				added++;
 			}
 			//main_stack.top()->is_used++;
 			if(added){
-			cave* cave_ptr= main_stack.top()->cave_stack.top();
-			main_stack.top()->cave_stack.pop();
-			main_stack.top()->cave_stack_level.pop();
-			main_stack.push(cave_ptr);
-			main_stack.top()->is_used++;
-			was_pop=false;		
-			//std::cout<<"is_used1\n";
+			cave* cave_ptr= main_stack.top();
+			main_stack.push(main_stack.top()->cave_stack.top());	
+			cave_ptr->is_used++;
+			cave_ptr->cave_stack.pop();
 			}else {
-				main_stack.top()->is_used--;
 				main_stack.pop();
-				was_pop=true;
+				//was_pop=true;
 			}
 			added=0;
 			
 		} else if(!main_stack.top()->cave_stack.empty()){
-			if(main_stack.top()->cave_stack_level.top()==main_stack.top()->is_used){
 			cave* cave_ptr= main_stack.top();
 			main_stack.push(main_stack.top()->cave_stack.top());	
-			was_pop=false;
-			//cave_ptr->is_used++;
-			cave_ptr->cave_stack.pop();
-			cave_ptr->cave_stack_level.pop();
-			main_stack.top()->is_used++;
-			//std::cout<<"is_used2\n";
-			}else{
-				main_stack.top()->is_used--;
-				main_stack.pop();
-			}
+			cave_ptr->is_used++;
+			cave_ptr->cave_stack.pop();	
 		} else if(main_stack.top()->cave_stack.empty()){
-			if(main_stack.top()->name=="end"){	
+			if(main_stack.top()->name=="end"){
+				main_stack.top()->is_used++;	
 				answer++;
-				
-				std::stack <cave*> temp_stack;
-				while(!main_stack.empty()){
-					temp_stack.push(main_stack.top());
-					main_stack.pop();
-				}
-				std::cout<<"\n***PATH: ";
-				while(!temp_stack.empty()){
-					main_stack.push(temp_stack.top());
-					std::cout<<main_stack.top()->name<<" ";
-					temp_stack.pop();
-				}
-				std::cout<<"\n\n";
-				
 			}
 			main_stack.top()->is_used--;	
+			main_stack.pop();		
+		} else if(main_stack.top()->name=="start"){
 			main_stack.pop();
-			was_pop=true;			
 		}
 		
-		if(!main_stack.empty()){
-		std::cout<<main_stack.top()->name<<" |is_used: "<<main_stack.top()->is_used<<" |is_small: "<<main_stack.top()->is_small;
-		if(main_stack.top()->name=="A"){
-			
-			std::stack <cave*> temp_stack;
-				while(!main_stack.top()->cave_stack.empty()){
-					temp_stack.push(main_stack.top()->cave_stack.top());
-					main_stack.top()->cave_stack.pop();
-				}
-				while(!temp_stack.empty()){
-					main_stack.top()->cave_stack.push(temp_stack.top());
-					std::cout<<" "<<main_stack.top()->cave_stack.top()->name<<" ";
-					temp_stack.pop();
-				}
-			
-		}
-		std::cout<<"\n";
-		}
+		std::cout<<main_stack.top()->name<<" |is_used: "<<main_stack.top()->is_used<<"\n";
 		/*if(main_stack.top()->name=="b")test++;
 		if(test==2){
 			std::cout<<main_stack.top()->name<<"\n";	
@@ -152,7 +108,7 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 		}*/
 		//std::cout<<v[4]->is_used<<"\n";
 	}
-	//std::cout<<answer;
+	
 	return answer;
 }
 
@@ -271,7 +227,7 @@ int main() {
 		}
 		
 		std::cout<<find_index(vec_2d,"start")<<"\nTRAVERSE:\n";
-		std::cout<<"Answer: "<<traverse(vec_2d, find_index(vec_2d,"start"));
+		traverse(vec_2d, find_index(vec_2d,"start"));
 		
 		myfile.close();
 	}
