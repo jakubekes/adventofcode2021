@@ -4,7 +4,7 @@
 #include<vector>
 #include<algorithm>
 #include<stack>
-
+#include<chrono>
 
 struct cave{
 
@@ -17,17 +17,9 @@ struct cave{
 	unsigned int is_used{};
 	std::stack<cave*> cave_stack{};
 	std::stack<int> cave_stack_level{};
-	// add stack/vector with used connections??
+
 };
 
-
-/*struct cave_cons{
-	
-cave_cons(cave* cave_con, bool is_used): cave_con{cave_con}, is_used{is_used}{}
-	
-	cave* cave_con{};
-	bool is_used{};
-}*/
 
 cave* find_cave(std::vector<cave*> &v, std::string s){
 	
@@ -105,13 +97,13 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 					temp_stack.push(main_stack.top());
 					main_stack.pop();
 				}
-				std::cout<<"\n***PATH: ";
+				//std::cout<<"\n***PATH: ";
 				while(!temp_stack.empty()){
 					main_stack.push(temp_stack.top());
-					std::cout<<main_stack.top()->name<<" ";
+					//std::cout<<main_stack.top()->name<<" ";
 					temp_stack.pop();
 				}
-				std::cout<<"\n\n";
+				//std::cout<<"\n\n";
 				
 			}
 			main_stack.top()->is_used--;	
@@ -119,7 +111,7 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 			was_pop=true;			
 		}
 		
-		if(!main_stack.empty()){
+		/*if(!main_stack.empty()){
 		std::cout<<main_stack.top()->name<<" |is_used: "<<main_stack.top()->is_used<<" |is_small: "<<main_stack.top()->is_small;
 		if(main_stack.top()->name=="A"){
 			
@@ -136,7 +128,7 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 			
 		}
 		std::cout<<"\n";
-		}
+		}*/
 		/*if(main_stack.top()->name=="b")test++;
 		if(test==2){
 			std::cout<<main_stack.top()->name<<"\n";	
@@ -158,6 +150,8 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 
 int main() {
 
+	auto start = std::chrono::high_resolution_clock::now();
+	
 	std::ifstream myfile;
 	myfile.open("day12_input.txt", std::ios_base::in);
 	std::string temp;
@@ -166,7 +160,7 @@ int main() {
 
 		
 	if (myfile.good()) {
-		std::cout << "File opened\n";
+		//std::cout << "File opened\n";
 		
 		while (getline(myfile, temp)) {
 			//std::cout<<temp<<"\n";
@@ -186,9 +180,9 @@ int main() {
 		
 		std::sort(v_temp.begin(), v_temp.end());	
 				
-		for(int i=0; i<v_temp.size();i++){
+		/*for(int i=0; i<v_temp.size();i++){
 			std::cout<<v_temp[i]<<"\n";
-		}
+		}*/
 			
 		for(int i=0; i<v_temp.size()-1;i++){
 			if(v_temp[i]==v_temp[i+1]){
@@ -198,7 +192,7 @@ int main() {
 			
 		}
 		
-		std::cout<<"After dup remove:\n";
+		//std::cout<<"After dup remove:\n";
 		
 		std::vector<cave*> vec_2d;
 		for(int i=0; i<v_temp.size();i++){
@@ -207,9 +201,9 @@ int main() {
 			vec_2d.push_back(new cave(v_temp[i],islower(v_temp[i][0]),0));	
 			
 		}
-		for(int i=0; i<vec_2d.size();i++){
+		/*for(int i=0; i<vec_2d.size();i++){
 		std::cout<<"name "<<vec_2d[i]->name<<"\n";
-		}
+		}*/
 
 		std::vector<std::string> vec_2d_temp, vec_2d_erase;
 		
@@ -254,26 +248,30 @@ int main() {
 		}
 		
 		//clear not needed connections (if count is 1x and with small only)
-		for (size_t i=0; i<vec_2d.size(); i++){
+		/*for (size_t i=0; i<vec_2d.size(); i++){
 			if(vec_2d[i]->connections.size()==1 && vec_2d[i]->connections[0]->is_small==1){
 				vec_2d[i]->connections.clear();
 			}
-		}
+		}*/
 		
 				
-		for (size_t i=0; i<vec_2d.size(); i++){
+		/*for (size_t i=0; i<vec_2d.size(); i++){
 			std::cout<<"\nVEC2D: "<<vec_2d[i]->name<<" "<<vec_2d[i]->is_small<<" "<<" "<<vec_2d[i]->is_used<<"\n";
 			for (size_t j=0; j<vec_2d[i]->connections.size(); j++){
 				std::cout<<"con: "<<j<<" : "<<vec_2d[i]->connections[j]->name<<"\n";
 				
 			}
 
-		}
+		}*/
 		
-		std::cout<<find_index(vec_2d,"start")<<"\nTRAVERSE:\n";
-		std::cout<<"Answer: "<<traverse(vec_2d, find_index(vec_2d,"start"));
-		
+		//std::cout<<find_index(vec_2d,"start")<<"\nTRAVERSE:\n";
+		//std::cout<<"Answer: "<<traverse(vec_2d, find_index(vec_2d,"start"))<<"\n";
+		printf("Answer: %d\n",traverse(vec_2d, find_index(vec_2d,"start")));
 		myfile.close();
+		
+		auto finish = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> elapsed = finish - start;
+        printf("Elapsed time: %f\n",elapsed.count());
 	}
 	else {
 		std::cout << "File not opened, quitting";
