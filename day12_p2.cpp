@@ -48,12 +48,14 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 	unsigned long int answer{};
 	int test{};
 	bool was_pop{};
+	bool was_small_visited_twice{};
+	
 	while(!main_stack.empty()){
 				
 		int added{};
 		if (was_pop==false && main_stack.top()->connections.size()>0){// && main_stack.top()->cave_stack.empty()){
 			for(size_t i{}; i<main_stack.top()->connections.size(); i++){
-				if(main_stack.top()->connections[i]->is_used>0 && main_stack.top()->connections[i]->is_small==true)continue;
+				if(main_stack.top()->connections[i]->is_used>0 && main_stack.top()->connections[i]->is_small==true && was_small_visited_twice)continue;
 				main_stack.top()->cave_stack.push(main_stack.top()->connections[i]);
 				main_stack.top()->cave_stack_level.push(main_stack.top()->is_used);
 				added++;
@@ -65,9 +67,11 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 			main_stack.top()->cave_stack_level.pop();
 			main_stack.push(cave_ptr);
 			main_stack.top()->is_used++;
+			if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=true;
 			was_pop=false;		
 			//std::cout<<"is_used1\n";
 			}else {
+				if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=false;
 				main_stack.top()->is_used--;
 				main_stack.pop();
 				was_pop=true;
@@ -83,8 +87,10 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 			cave_ptr->cave_stack.pop();
 			cave_ptr->cave_stack_level.pop();
 			main_stack.top()->is_used++;
+			if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=true;
 			//std::cout<<"is_used2\n";
 			}else{
+				if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=false;
 				main_stack.top()->is_used--;
 				main_stack.pop();
 			}
@@ -106,6 +112,7 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 				//std::cout<<"\n\n";
 				
 			}
+			if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=false;
 			main_stack.top()->is_used--;	
 			main_stack.pop();
 			was_pop=true;			
