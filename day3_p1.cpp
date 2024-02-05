@@ -6,13 +6,13 @@
 
 int main(){
 
-	std::fstream plik;
-	plik.open("day3_input.txt", std::ios_base::in);
+	std::ifstream plik;
+	plik.open("day3_input.txt");
 
 	int num_length=12;
 	std::vector<unsigned long int> v{0,0,0,0,0,0,0,0,0,0,0,0};
 	std::string temp{};
-	unsigned long int s{};
+	unsigned long int s{};s
 	
 	while(std::getline(plik, temp)) {
 		s++;		
@@ -31,6 +31,4 @@ int main(){
 	}
 	
 	std::cout<<gamma.to_ulong()*epsilon.to_ulong();
-	
-
 }

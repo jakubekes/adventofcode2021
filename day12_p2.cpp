@@ -20,7 +20,6 @@ struct cave{
 
 };
 
-
 cave* find_cave(std::vector<cave*> &v, std::string s){
 	
 	for (int i{}; i<v.size(); i++){
@@ -53,14 +52,14 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 	while(!main_stack.empty()){
 				
 		int added{};
-		if (was_pop==false && main_stack.top()->connections.size()>0){// && main_stack.top()->cave_stack.empty()){
+		if (was_pop==false && main_stack.top()->connections.size()>0){
 			for(size_t i{}; i<main_stack.top()->connections.size(); i++){
 				if(main_stack.top()->connections[i]->is_used>0 && main_stack.top()->connections[i]->is_small==true && was_small_visited_twice)continue;
 				main_stack.top()->cave_stack.push(main_stack.top()->connections[i]);
 				main_stack.top()->cave_stack_level.push(main_stack.top()->is_used);
 				added++;
 			}
-			//main_stack.top()->is_used++;
+
 			if(added){
 			cave* cave_ptr= main_stack.top()->cave_stack.top();
 			main_stack.top()->cave_stack.pop();
@@ -69,7 +68,6 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 			main_stack.top()->is_used++;
 			if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=true;
 			was_pop=false;		
-			//std::cout<<"is_used1\n";
 			}else {
 				if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=false;
 				main_stack.top()->is_used--;
@@ -83,12 +81,10 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 			cave* cave_ptr= main_stack.top();
 			main_stack.push(main_stack.top()->cave_stack.top());	
 			was_pop=false;
-			//cave_ptr->is_used++;
 			cave_ptr->cave_stack.pop();
 			cave_ptr->cave_stack_level.pop();
 			main_stack.top()->is_used++;
 			if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=true;
-			//std::cout<<"is_used2\n";
 			}else{
 				if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=false;
 				main_stack.top()->is_used--;
@@ -97,61 +93,13 @@ unsigned long int traverse(std::vector<cave*> &v, int start_index){
 		} else if(main_stack.top()->cave_stack.empty()){
 			if(main_stack.top()->name=="end"){	
 				answer++;
-				
-				/*std::stack <cave*> temp_stack;
-				while(!main_stack.empty()){
-					temp_stack.push(main_stack.top());
-					main_stack.pop();
-				}
-				//std::cout<<"\n***PATH: ";
-				while(!temp_stack.empty()){
-					main_stack.push(temp_stack.top());
-					//std::cout<<main_stack.top()->name<<" ";
-					temp_stack.pop();
-				}*/
-				//std::cout<<"\n\n";
-				
 			}
 			if(main_stack.top()->is_used==2 && main_stack.top()->is_small)was_small_visited_twice=false;
 			main_stack.top()->is_used--;	
 			main_stack.pop();
 			was_pop=true;			
 		}
-		
-		/*if(!main_stack.empty()){
-		std::cout<<main_stack.top()->name<<" |is_used: "<<main_stack.top()->is_used<<" |is_small: "<<main_stack.top()->is_small;
-		if(main_stack.top()->name=="A"){
-			
-			std::stack <cave*> temp_stack;
-				while(!main_stack.top()->cave_stack.empty()){
-					temp_stack.push(main_stack.top()->cave_stack.top());
-					main_stack.top()->cave_stack.pop();
-				}
-				while(!temp_stack.empty()){
-					main_stack.top()->cave_stack.push(temp_stack.top());
-					std::cout<<" "<<main_stack.top()->cave_stack.top()->name<<" ";
-					temp_stack.pop();
-				}
-			
-		}
-		std::cout<<"\n";
-		}*/
-		/*if(main_stack.top()->name=="b")test++;
-		if(test==2){
-			std::cout<<main_stack.top()->name<<"\n";	
-			std::cout<<main_stack.top()->is_used<<"\n";	
-			std::cout<<main_stack.top()->is_small<<"\n";	
-			std::cout<<"Cave_stack:\n";	
-			while(!main_stack.top()->cave_stack.empty()){
-				
-				std::cout<<main_stack.top()->cave_stack.top()->name<<"\n";
-				main_stack.top()->cave_stack.pop();
-			}
-			break;
-		}*/
-		//std::cout<<v[4]->is_used<<"\n";
 	}
-	//std::cout<<answer;
 	return answer;
 }
 
@@ -160,18 +108,13 @@ int main() {
 	auto start = std::chrono::high_resolution_clock::now();
 	
 	std::ifstream myfile;
-	myfile.open("day12_input.txt", std::ios_base::in);
+	myfile.open("day12_input.txt");
 	std::string temp;
 	std::string ch{};
 	std::vector<std::string> v_temp;
-
 		
 	if (myfile.good()) {
-		//std::cout << "File opened\n";
-		
 		while (getline(myfile, temp)) {
-			//std::cout<<temp<<"\n";
-
 			for(int i=0; i<temp.length();i++){
 				if(temp[i]!='-'){
 					ch+=temp[i];
@@ -186,11 +129,7 @@ int main() {
 		}
 		
 		std::sort(v_temp.begin(), v_temp.end());	
-				
-		/*for(int i=0; i<v_temp.size();i++){
-			std::cout<<v_temp[i]<<"\n";
-		}*/
-			
+					
 		for(int i=0; i<v_temp.size()-1;i++){
 			if(v_temp[i]==v_temp[i+1]){
 				v_temp.erase (v_temp.begin() + i);
@@ -199,18 +138,10 @@ int main() {
 			
 		}
 		
-		//std::cout<<"After dup remove:\n";
-		
 		std::vector<cave*> vec_2d;
 		for(int i=0; i<v_temp.size();i++){
-			//if(v_temp[i]=="end")continue;
-
-			vec_2d.push_back(new cave(v_temp[i],islower(v_temp[i][0]),0));	
-			
+			vec_2d.push_back(new cave(v_temp[i],islower(v_temp[i][0]),0));		
 		}
-		/*for(int i=0; i<vec_2d.size();i++){
-		std::cout<<"name "<<vec_2d[i]->name<<"\n";
-		}*/
 
 		std::vector<std::string> vec_2d_temp, vec_2d_erase;
 		
@@ -219,8 +150,6 @@ int main() {
 			myfile.clear();
 			myfile.seekg(0);
 			while (getline(myfile, temp)) {
-				//std::cout<<temp<<"\n";
-
 				for(int i=0; i<temp.length();i++){
 					if(temp[i]!='-'){
 						ch+=temp[i];
@@ -246,33 +175,12 @@ int main() {
 						continue;	
 					}
 					vec_2d[i]->connections.push_back(find_cave(vec_2d,vec_2d_temp[0]));
-				
 				}
 				
 				vec_2d_temp.clear();
 			}
-		
 		}
-		
-		//clear not needed connections (if count is 1x and with small only)
-		/*for (size_t i=0; i<vec_2d.size(); i++){
-			if(vec_2d[i]->connections.size()==1 && vec_2d[i]->connections[0]->is_small==1){
-				vec_2d[i]->connections.clear();
-			}
-		}*/
-		
-				
-		/*for (size_t i=0; i<vec_2d.size(); i++){
-			std::cout<<"\nVEC2D: "<<vec_2d[i]->name<<" "<<vec_2d[i]->is_small<<" "<<" "<<vec_2d[i]->is_used<<"\n";
-			for (size_t j=0; j<vec_2d[i]->connections.size(); j++){
-				std::cout<<"con: "<<j<<" : "<<vec_2d[i]->connections[j]->name<<"\n";
-				
-			}
 
-		}*/
-		
-		//std::cout<<find_index(vec_2d,"start")<<"\nTRAVERSE:\n";
-		//std::cout<<"Answer: "<<traverse(vec_2d, find_index(vec_2d,"start"))<<"\n";
 		printf("Answer: %d\n",traverse(vec_2d, find_index(vec_2d,"start")));
 		myfile.close();
 		
@@ -285,6 +193,5 @@ int main() {
 		return 1;
 	}
 
-	//getchar();
 	return 0;
 }

@@ -3,21 +3,20 @@
 #include<string>
 #include<stack>
 #include<vector>
-#include <algorithm>
+#include<algorithm>
 
 int main() {
 
 	std::ifstream myfile;
-	myfile.open("day10_input.txt", std::ios_base::in);
+	myfile.open("day10_input.txt");
 	std::string temp;
 	unsigned long int answer{};
 	std::vector<unsigned long long int> v{};
 
 	if (myfile.good()) {
-		std::cout << "File opened\n";
 		
+		std::cout << "File opened\n";
 		while (getline(myfile, temp)) {
-			//std::cout<<temp<<"\n";
 			std::stack <char> mystack{};
 			bool b{};
 			std::string mystr{};
@@ -38,9 +37,9 @@ int main() {
 						break;									
 				}			
 			}
-			if(b==true){
-				continue;
-			}
+			
+			if(b==true) continue;
+			
 			while(!mystack.empty()){														
 				if(mystack.top()=='(')mystr+=')';
 				if(mystack.top()=='[')mystr+=']';		
@@ -50,7 +49,7 @@ int main() {
 			}
 			
 			unsigned long long int points{};
-			std::cout<<"mystr"<<mystr<<"\n";
+			
 			for(int i=0; i<mystr.length();i++){
 				points*=5;
 				if(mystr[i]==')')points+=1;
@@ -59,16 +58,10 @@ int main() {
 				if(mystr[i]=='>')points+=4;				
 			}
 			v.push_back(points);
-			
 		}
 	
 		std::sort(v.begin(), v.end());
-		for(int i=0; i<v.size();i++){
-			std::cout<<i<<": "<<v[i]<<"\n";
-		}
-		
 		answer=v[v.size()/2];
-		
 		std::cout<<"Answer:"<< answer;
 		myfile.close();
 	}
@@ -77,6 +70,5 @@ int main() {
 		return 1;
 	}
 
-	//getchar();
 	return 0;
 }

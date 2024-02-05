@@ -6,7 +6,7 @@
 int main() {
 
 	std::ifstream myfile;
-	myfile.open("day11_input.txt", std::ios_base::in);
+	myfile.open("day11_input.txt");
 	std::string temp;
 	unsigned long int answer{};
 	std::vector <std::vector<int>> v;
@@ -16,8 +16,6 @@ int main() {
 		std::cout << "File opened\n";
 		
 		while (getline(myfile, temp)) {
-			//std::cout<<temp<<"\n";
-
 			for(int i=0; i<temp.length();i++){
 				tempv.push_back(temp[i]-48);				
 			}								
@@ -46,23 +44,22 @@ int main() {
 			while(stepflashes>0){
 				stepflashes=0;
 				for(int i=0; i<v.size(); i++){
-					for(int j=0; j<v[0].size(); j++){
-						if (v[i][j]==-1)continue;
-						if (v[i][j]>9){
-							v[i][j]=-1;
-							stepflashes++;
-							for(int k=i-1; k<i+2; k++){
-							for(int l=j-1; l<j+2; l++){
-								if ( k<0 || l<0 || k>v.size()-1 || l>v[0].size()-1 || (k==i && l==j) || v[k][l]==-1)continue;
-								v[k][l]++;
-							}
-							}
+				for(int j=0; j<v[0].size(); j++){
+					if (v[i][j]==-1)continue;
+					if (v[i][j]>9){
+						v[i][j]=-1;
+						stepflashes++;
+						for(int k=i-1; k<i+2; k++){
+						for(int l=j-1; l<j+2; l++){
+							if ( k<0 || l<0 || k>v.size()-1 || l>v[0].size()-1 || (k==i && l==j) || v[k][l]==-1)continue;
+							v[k][l]++;
 						}
-				
-					}				
+						}
+					}
+			
+				}				
 				}
 				answer+=stepflashes;
-				
 			}
 			
 			if (answer==100){
@@ -72,14 +69,12 @@ int main() {
 			answer=0;
 			stepper++;
 		}			
-		
 		myfile.close();
 	}
 	else {
 		std::cout << "File not opened, quitting";
 		return 1;
 	}
-
-	//getchar();
+	
 	return 0;
 }

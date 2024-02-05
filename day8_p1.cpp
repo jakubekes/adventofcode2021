@@ -7,16 +7,14 @@
 int main() {
 
 	std::ifstream myfile;
-	myfile.open(".\\day8_input.txt", std::ios_base::in);
+	myfile.open("day8_input.txt");
 	std::string temp{},temp_input{};
 	std::vector<std::string> v;
 	unsigned int sum{};
 	
 	if (myfile.good()) {
 		
-		while (getline(myfile, temp)) {
-			//std::cout<<temp<<"\n";
-			
+		while (getline(myfile, temp)) {		
 			for(int i=0; i<temp.length();i++){
 				if(temp[i]!='|'){
 					continue;
@@ -28,7 +26,6 @@ int main() {
 							if(temp_input.length()==2 || temp_input.length()==4 || temp_input.length()==3 || temp_input.length()==7)sum++;
 							temp_input.clear();						
 						}
-						
 					}
 					if(temp_input.length()==2 || temp_input.length()==4 || temp_input.length()==3 || temp_input.length()==7)sum++;
 					temp_input.clear();
@@ -37,15 +34,12 @@ int main() {
 		}	
 
 		std::cout<<"Answer: "<<sum<<"\n";
-	
 	}
 	else {
 		std::cout << "File not opened, quitting";
 		return 1;
 	}
 	
-
 	myfile.close();
-	//getchar();
 	return 0;
 }

@@ -7,7 +7,7 @@
 int main() {
 
 	std::ifstream  plik;
-	plik.open("day4_input.txt", std::ios::in);
+	plik.open("day4_input.txt");
 
 	std::vector <int> bingo_numbers{83,5,71,61,88,55,95,6,0,97,20,16,27,7,79,25,81,29,22,52,43,21,53,59,99,18,35,96,51,93,14,77,15,3,57,28,58,17,50,32,74,63,76,84,65,9,62,67,48,12,8,68,31,19,36,85,98,30,91,89,66,80,75,47,4,23,60,70,87,90,13,38,56,34,46,24,41,92,37,49,73,10,94,26,42,40,33,54,86,82,72,39,2,45,78,11,1,44,69,64};
 	std::vector <std::vector <std::vector<int>>> v;
@@ -15,9 +15,7 @@ int main() {
 	std::vector <int> v1d;
 	std::string temp, s;
 	int i{}, j{};
-
-	if (plik.is_open()) {
-
+s
 		while (std::getline(plik, temp)) {
 			if (temp == "")continue;
 			std::stringstream ss(temp);
@@ -35,27 +33,12 @@ int main() {
 			}
 		}	
 	}
-	else {
-		std::cout << "Nie otwarto pliku";
-	}
 
 	plik.close();
 
-	/*for (int i = 0; i < v.size(); i++) {
-		for (int j = 0; j < v[0].size(); j++) {
-			for (int k = 0; k < v[0][0].size(); k++) {
-				std::cout << v[i][j][k] << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "\n";
-	}*/
 	int memnum{ -1 };
 	bool bbd{false};
 	
-	/*for (int z = 0; z < bingo_numbers.size(); z++) {
-		std::cout << bingo_numbers[z] << " ";
-	 }*/
 		for (int z = 0; z < bingo_numbers.size(); z++) {
 
 			for (int i = 0; i < v.size(); i++) {
@@ -87,12 +70,10 @@ int main() {
 				if (memnum > -1) break;			
 			}
 			if (memnum > -1) break;
-			
 		}
 
-
 	int sum{};
-	//std::cout <<"FINAL: "<< v.size() << "\n";
+	
 	for (int j = 0; j < v[0].size(); j++) {
 		for (int k = 0; k < v[0][0].size(); k++) {
 			if (v[0][j][k] == -1)continue;
@@ -101,5 +82,4 @@ int main() {
 	}
 
 	std::cout << sum*memnum;
-
 }

@@ -26,7 +26,6 @@ unsigned long int pv(std::vector <int> v){
 		s--;
 		r=0;
 	}
-
 	
 	return w;
 }
@@ -42,34 +41,27 @@ int main() {
 	if (myfile.good()) {
 		
 		while (getline(myfile, temp)) {
-			//std::cout<<temp<<"\n";
-
 			for(int i=0; i<temp.length();i++){
 				if(temp[i]>=48 && temp[i]<=57){
 					temp_num+=temp[i];
-				}else{
+				}
+				else {
 					if(temp_num.length()>0){
 					num=std::stoi(temp_num);
 					v.push_back(num);	
-					//std::cout<<"Pushuje:" <<num<<"\n";
 					temp_num.clear();
 					}
 				}
-				
 			}
 			
 			if(temp_num.length()>0){
 				num=std::stoi(temp_num);
 				v.push_back(num);	
-				//std::cout<<"Pushuje:" <<num<<"\n";
 				temp_num.clear();
 			}
-			
 		}	
 
-		//std::cout<<v.size()<<"\n";
 		std::cout<<"Answer: "<<pv(v);
-	
 	}
 	else {
 		std::cout << "File not opened, quitting";
@@ -77,6 +69,5 @@ int main() {
 	}
 	
 	myfile.close();
-	//getchar();
 	return 0;
 }

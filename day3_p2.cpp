@@ -6,8 +6,8 @@
 
 int main(){
 
-	std::fstream plik;
-	plik.open("day3_input.txt", std::ios_base::in);
+	std::ifstream plik;
+	plik.open("day3_input.txt");
 
 	const int num_length=12;
 	
@@ -64,8 +64,6 @@ int main(){
 		}
 		b--;
 	}
-		
-	//std::cout<<oxygen.size()<<" "<<oxygen[0]<<" "<<scrubber.size()<<" "<<scrubber[0]<<"\n";
-	std::cout<<oxygen[0].to_ulong()*scrubber[0].to_ulong();
-	
+
+	std::cout<<oxygen[0].to_ulong()*scrubber[0].to_ulong();	
 }

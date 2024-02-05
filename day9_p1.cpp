@@ -6,7 +6,7 @@
 int main() {
 
 	std::ifstream  plik;
-	plik.open("day9_input.txt", std::ios::in);
+	plik.open("day9_input.txt");
 	std::string temp;
 	std::vector<std::vector<int>> table;
 	std::vector<int> table_temp, v;
@@ -19,7 +19,6 @@ int main() {
 			}
 			table.push_back(table_temp);
 			table_temp.clear();
-		
 		}
 		
 		for (int i=0; i<table.size(); i++){
@@ -52,15 +51,12 @@ int main() {
 			}
 		}
 		
-		
 		std::cout<<"Answer: "<<answer;
 	}
 	else {
 		
-		std::cout << "Nie otwarto pliku";
-		
+		std::cout << "File not opened, quitting";
 	}
 
 	plik.close();
-
 }

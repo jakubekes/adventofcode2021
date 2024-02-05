@@ -5,8 +5,8 @@
 
 int main(){
 
-	std::fstream plik;
-	plik.open("day2_input.txt", std::ios_base::in);
+	std::ifstream plik;
+	plik.open("day2_input.txt");
 
 	int horizontal{0};
 	int depth{0}, aim{0};
@@ -29,6 +29,5 @@ int main(){
 		}
 	}
 	
-	//printf("%u %u\n",horizontal,depth);
 	std::cout<<horizontal*depth;
 }

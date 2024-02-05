@@ -6,17 +6,16 @@
 int main() {
 
 	std::ifstream myfile;
-	myfile.open("day10_input.txt", std::ios_base::in);
+	myfile.open("day10_input.txt");
 	std::string temp;
 	unsigned long int answer{};
 	
 	if (myfile.good()) {
-		std::cout << "File opened\n";
 		
+		std::cout << "File opened\n";
 		std::stack <char> mystack;
+		
 		while (getline(myfile, temp)) {
-			//std::cout<<temp<<"\n";
-
 			for(int i=0; i<temp.length();i++){
 				if(temp[i]=='(' || temp[i]=='[' || temp[i]=='{' || temp[i]=='<'){
 					mystack.push(temp[i]);
@@ -46,6 +45,5 @@ int main() {
 		return 1;
 	}
 
-	//getchar();
 	return 0;
 }
